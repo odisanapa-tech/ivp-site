@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils";
 const nav = [
   { href: "/#about", label: "Об ИВП" },
   { href: "/#directions", label: "Направления" },
-  { href: "/#projects", label: "Разработки" },
+  { href: "/materials", label: "Материалы" },
   { href: "/#approach", label: "Исследования" },
   { href: "/#team", label: "Команда" },
 ];
