@@ -42,7 +42,7 @@ export default function HomePage() {
               Ученик не занимается дома, боится сцены или зажимается. Родители ждут быстрого результата. А у самого педагога порой нет времени разобраться, что происходит. ИВП помогает рассматривать такие ситуации глубже - с уважением к вокальной профессии и ее границам.
             </p>
             <div className="mt-10 flex flex-wrap gap-3">
-              <a href="#directions" className="inline-flex items-center gap-3 rounded-md bg-accent px-6 py-4 font-medium text-white transition-colors hover:bg-accent-hover">
+              <a href="#audience" className="inline-flex items-center gap-3 rounded-md bg-accent px-6 py-4 font-medium text-white transition-colors hover:bg-accent-hover">
                 Узнать знакомые ситуации <ArrowRight className="h-4 w-4" />
               </a>
               <a href="#projects" className="inline-flex items-center gap-3 rounded-md border border-rule bg-page/80 px-6 py-4 font-medium text-ink transition-colors hover:border-accent">
