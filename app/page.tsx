@@ -1,472 +1,187 @@
-import Link from "next/link";
-import {
-  ArrowRight,
-  ArrowUpRight,
-  GraduationCap,
-  HeartHandshake,
-  Mic2,
-  Sparkles,
-  Users,
-} from "lucide-react";
-import { Section, SectionHeader } from "@/components/ui/section";
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { ProgramCard } from "@/components/site/program-card";
-import { LeadForm } from "@/components/site/lead-form";
-import { programs, findProgram } from "@/lib/programs";
+import { ArrowDownRight, ArrowRight, ArrowUpRight, BookOpenText, Compass, FlaskConical, GraduationCap, Layers3, MoveUpRight, UsersRound } from "lucide-react";
 
-const tracks = [
-  {
-    id: "vocalist",
-    icon: Mic2,
-    title: "Педагог по вокалу",
-    text:
-      "Вы работаете с учеником, у которого голос не идёт по невокальным причинам — зажим, страх, потеря мотивации, ролевой конфликт. Получаете инструменты, которых нет в классической методике.",
-    entry: "/programs/osnovy-vokalnoy-psihologii",
-  },
-  {
-    id: "psychologist",
-    icon: HeartHandshake,
-    title: "Психолог",
-    text:
-      "Вы заходите в вокальную специализацию — нишу с высокой востребованностью, где ваш профильный опыт получает конкретную рабочую рамку и клиентский поток.",
-    entry: "/programs/osnovy-vokalnoy-psihologii",
-  },
-  {
-    id: "artist",
-    icon: Sparkles,
-    title: "Артист-педагог",
-    text:
-      "Вы переводите свой сценический опыт в педагогическую методологию — так, чтобы её можно было передавать другим, а не только показывать собой.",
-    entry: "/programs/osnovy-vokalnoy-psihologii",
-  },
+const roleUrl = "https://pro.vocalpsy-institute.ru/novaya-rol/";
+
+const directions = [
+  { n: "01", icon: GraduationCap, title: "Образование", text: "Практикумы, образовательные программы и материалы для специалистов, работающих с голосом и людьми.", detail: "Учиться и применять" },
+  { n: "02", icon: FlaskConical, title: "Исследования", text: "Изучение психологических аспектов вокального обучения, сценического опыта и профессионального развития.", detail: "Исследовать и проверять" },
+  { n: "03", icon: Layers3, title: "Практика и инструменты", text: "Рабочие тетради, методические материалы, профессиональные навигаторы и цифровые решения.", detail: "Использовать в работе" },
+  { n: "04", icon: UsersRound, title: "Профессиональный диалог", text: "Обмен опытом между вокальными педагогами, психологами, артистами и образовательными организациями.", detail: "Встречаться и сотрудничать" },
 ];
 
-const promises = [
-  {
-    icon: GraduationCap,
-    title: "Профессиональная идентичность",
-    text:
-      "Не «психология для педагогов вообще» и не «вокал для психологов», а специфическая пограничная компетенция — работа с состоянием ученика в моменте голосового акта.",
-  },
-  {
-    icon: HeartHandshake,
-    title: "Лицензированные удостоверения",
-    text:
-      "Институт ведёт образовательную деятельность на основании лицензии и выдаёт удостоверения о повышении квалификации государственного образца.",
-  },
-  {
-    icon: Users,
-    title: "Институциональная школа",
-    text:
-      "Коллектив методистов и преподавателей, а не проект вокруг одной фигуры. Знания сохраняются и передаются на уровне института.",
-  },
+const audiences = [
+  { n: "01", title: "Ученик не занимается дома", text: "На уроках хочет результата, но самостоятельно почти ничего не делает. Как говорить об этом и где граница ответственности педагога?" },
+  { n: "02", title: "На сцене все меняется", text: "На занятии звучит свободно, а перед зрителями зажимается или боится ошибиться. Как различать вокальную задачу и переживание?" },
+  { n: "03", title: "Родители ждут другого результата", text: "Педагог, ученик и родитель могут по-разному понимать цель занятий. Как не потерять контакт и договориться о реальных ожиданиях?" },
 ];
 
-const ladder = [
-  {
-    step: "01",
-    title: "Бесплатно попробовать",
-    text: "Мастер-класс, диагностический тест или подкаст — чтобы понять, ваш ли это язык.",
-    cta: { href: "/free", label: "Открыть бесплатные материалы" },
-  },
-  {
-    step: "02",
-    title: "Мини-курс или практикум",
-    text: "Короткий формат под конкретную задачу — 10–20 часов, с обратной связью.",
-    cta: { href: "/programs?type=course", label: "Смотреть мини-курсы" },
-  },
-  {
-    step: "03",
-    title: "Полная программа ПК",
-    text: "От 48 до 72 часов, с лицензированным удостоверением о повышении квалификации.",
-    cta: { href: "/programs?type=program", label: "Смотреть программы" },
-  },
+const work = [
+  { eyebrow: "ДЕЙСТВУЮЩАЯ СТРАНИЦА", title: "Новая профессиональная роль", text: "Когда хочется выйти за рамки обычных уроков и понять, что еще можно делать со своим опытом. Отдельная страница проекта для педагогов.", href: roleUrl, action: "Посмотреть проект", external: true },
+  { eyebrow: "PDF-КОМПЛЕКТ · ГОТОВНОСТЬ УТОЧНЯЕТСЯ", title: "Профессиональная пересборка", text: "Опыт есть, ученики и результаты есть. Но как описать, что именно вы делаете и что в вашей работе свое? Две рабочие тетради о практике и собственном методе.", href: "/materials#peresborka", action: "О тетрадях", external: false },
+  { eyebrow: "АТЛАС · УСЛОВИЯ ПОЛУЧЕНИЯ УТОЧНЯЮТСЯ", title: "Навигатор для работы педагога", text: "Уроки с детьми, подготовка к конкурсу, взрослые ученики, онлайн. Разные форматы работы требуют разных договоренностей и критериев результата.", href: "/materials#atlas", action: "О навигаторе", external: false },
 ];
+
+function Eyebrow({ children }: { children: React.ReactNode }) {
+  return <div className="text-[11px] md:text-xs tracking-[0.18em] uppercase font-semibold text-bronze">{children}</div>;
+}
 
 export default function HomePage() {
-  const flagship = findProgram("osnovy-vokalnoy-psihologii");
-  const samplers = programs.filter(
-    (p) => p.type === "sampler" && p.status === "ready"
-  );
-  const featured = programs.filter((p) => p.featured);
-
   return (
     <>
-      {/* HERO */}
-      <section className="relative overflow-hidden">
-        <div
-          aria-hidden
-          className="absolute inset-0 -z-10 opacity-70"
-          style={{
-            background:
-              "radial-gradient(60% 55% at 78% 18%, #EDE4F0 0%, transparent 60%), radial-gradient(50% 45% at 8% 90%, #F1E7D8 0%, transparent 55%)",
-          }}
-        />
-        <div className="container-tight pt-16 md:pt-24 pb-20 md:pb-28">
-          <div className="grid lg:grid-cols-[1.15fr,1fr] gap-14 items-start">
-            <div className="max-w-2xl animate-fade-up">
-              <div className="kicker mb-6">
-                <span className="h-1.5 w-1.5 rounded-full bg-bronze" />
-                Институт вокальной психологии — первый в России профильный
-              </div>
-              <h1 className="text-display-1 font-display text-ink">
-                Профессиональное образование в вокальной&nbsp;психологии
-              </h1>
-              <p className="mt-6 text-lg md:text-xl text-muted leading-relaxed max-w-xl">
-                Мы обучаем работать с голосом ученика тогда, когда техника не помогает.
-                Для педагогов по вокалу, психологов и артистов-педагогов.
-              </p>
-              <div className="mt-8 flex flex-wrap gap-3">
-                <Button asChild size="lg">
-                  <Link href="/test">
-                    Пройти тест «Ваша траектория»
-                    <ArrowRight className="h-4 w-4" />
-                  </Link>
-                </Button>
-                <Button asChild size="lg" variant="secondary">
-                  <Link href="/programs">Смотреть программы</Link>
-                </Button>
-              </div>
-              <dl className="mt-14 grid grid-cols-3 gap-6 max-w-lg">
-                <div>
-                  <dt className="text-[11px] uppercase tracking-[0.14em] text-muted">
-                    Продуктов
-                  </dt>
-                  <dd className="mt-1 font-display text-2xl text-ink">30+</dd>
-                </div>
-                <div>
-                  <dt className="text-[11px] uppercase tracking-[0.14em] text-muted">
-                    Лицензия
-                  </dt>
-                  <dd className="mt-1 font-display text-2xl text-ink">Гос. образец</dd>
-                </div>
-                <div>
-                  <dt className="text-[11px] uppercase tracking-[0.14em] text-muted">
-                    Формат
-                  </dt>
-                  <dd className="mt-1 font-display text-2xl text-ink">Онлайн</dd>
-                </div>
-              </dl>
+      <section className="relative overflow-hidden border-b border-rule bg-page">
+        <div aria-hidden className="pointer-events-none absolute -right-24 top-12 h-[360px] w-[360px] md:h-[650px] md:w-[650px] rounded-full border border-accent/15" />
+        <div aria-hidden className="pointer-events-none absolute -right-6 top-28 h-[260px] w-[260px] md:h-[510px] md:w-[510px] rounded-full border border-accent/20" />
+        <div aria-hidden className="pointer-events-none absolute right-12 top-44 h-[120px] w-[120px] md:h-[360px] md:w-[360px] rounded-full border border-bronze/25" />
+        <div className="container-tight relative pt-16 pb-20 md:pt-28 md:pb-28">
+          <div className="max-w-[850px]">
+            <Eyebrow>Институт вокальной психологии</Eyebrow>
+            <h1 className="mt-7 text-[clamp(3.3rem,8vw,7.1rem)] leading-[0.99] tracking-[-0.055em] font-display font-medium text-ink">
+              Ученики разные.<br /><span className="text-accent">Вопросы</span><br />тоже.
+            </h1>
+            <p className="mt-8 max-w-[650px] text-[18px] md:text-[22px] leading-[1.6] text-ink/80">
+              Ученик не занимается дома, боится сцены или зажимается. Родители ждут быстрого результата. А у самого педагога порой нет времени разобраться, что происходит. ИВП помогает рассматривать такие ситуации глубже - с уважением к вокальной профессии и ее границам.
+            </p>
+            <div className="mt-10 flex flex-wrap gap-3">
+              <a href="#audience" className="inline-flex items-center gap-3 rounded-md bg-accent px-6 py-4 font-medium text-white transition-colors hover:bg-accent-hover">
+                Узнать знакомые ситуации <ArrowRight className="h-4 w-4" />
+              </a>
+              <a href="/materials" className="inline-flex items-center gap-3 rounded-md border border-rule bg-page/80 px-6 py-4 font-medium text-ink transition-colors hover:border-accent">
+                Посмотреть материалы <ArrowDownRight className="h-4 w-4" />
+              </a>
             </div>
-
-            {/* Boxed side card: three tracks */}
-            <div className="lg:pt-6 animate-fade-up [animation-delay:100ms]">
-              <div className="rounded-lg border border-rule bg-card p-6 md:p-7">
-                <div className="kicker mb-4">Три входа в институт</div>
-                <p className="font-display text-[19px] text-ink leading-snug mb-5">
-                  Не знаете, с чего начать — начните с траектории.
-                </p>
-                <ul className="space-y-3.5">
-                  {tracks.map((t) => (
-                    <li key={t.id}>
-                      <Link
-                        href={t.entry}
-                        className="group flex items-start gap-3 rounded-md p-2 -m-2 hover:bg-accent-soft/50 transition-colors"
-                      >
-                        <span className="grid h-9 w-9 place-items-center rounded-md bg-page text-accent border border-rule shrink-0">
-                          <t.icon className="h-4 w-4" />
-                        </span>
-                        <div>
-                          <div className="text-[15px] font-medium text-ink group-hover:text-accent flex items-center gap-1.5">
-                            {t.title}
-                            <ArrowUpRight className="h-3.5 w-3.5 opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
-                          </div>
-                          <div className="text-[13px] text-muted leading-relaxed mt-0.5">
-                            Программы под этот вход
-                          </div>
-                        </div>
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-                <Link
-                  href="/test"
-                  className="mt-6 inline-flex items-center gap-1.5 text-[14px] text-accent font-medium"
-                >
-                  Пройти диагностику за 3 минуты
-                  <ArrowRight className="h-4 w-4" />
-                </Link>
-              </div>
-            </div>
+          </div>
+          <div className="mt-16 md:mt-24 flex items-center justify-between gap-4 border-t border-ink/15 pt-5 text-xs uppercase tracking-[0.12em] text-muted">
+            <span>Наука · Образование · Практика</span><span className="hidden sm:inline">ИВП / 2026</span>
           </div>
         </div>
       </section>
 
-      {/* Что даёт ИВП */}
-      <Section>
-        <div className="container-tight">
-          <SectionHeader
-            kicker="Что даёт институт"
-            title="Специализация, которую невозможно собрать самостоятельно"
-            lead="Работа с состоянием ученика в моменте голосового акта — там, где переплетаются телесное, эмоциональное, когнитивное и идентичностное."
-          />
-          <div className="grid md:grid-cols-3 gap-6">
-            {promises.map((p) => (
-              <div
-                key={p.title}
-                className="p-6 md:p-7 rounded-lg border border-rule/60 bg-card/60"
-              >
-                <span className="grid h-10 w-10 place-items-center rounded-md bg-accent-soft text-accent">
-                  <p.icon className="h-5 w-5" />
-                </span>
-                <h3 className="mt-5 font-display text-xl text-ink">{p.title}</h3>
-                <p className="mt-2 text-[15px] text-muted leading-relaxed">
-                  {p.text}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </Section>
-
-      {/* Три траектории — подробно */}
-      <Section className="bg-card">
-        <div className="container-tight">
-          <SectionHeader
-            kicker="Кому ИВП"
-            title="Три траектории — три языка описания"
-            lead="У каждой траектории свой набор входных программ и своя логика движения."
-          />
-          <div className="grid lg:grid-cols-3 gap-6">
-            {tracks.map((t, i) => (
-              <Card key={t.id} className="bg-page flex flex-col">
-                <div className="p-6 md:p-7 flex-1">
-                  <div className="flex items-center gap-3">
-                    <span className="grid h-10 w-10 place-items-center rounded-md bg-accent text-white">
-                      <t.icon className="h-5 w-5" />
-                    </span>
-                    <Badge variant="muted">Траектория {i + 1}</Badge>
-                  </div>
-                  <h3 className="mt-5 font-display text-2xl text-ink leading-tight">
-                    {t.title}
-                  </h3>
-                  <p className="mt-3 text-[15px] text-muted leading-relaxed">
-                    {t.text}
-                  </p>
-                  <Link
-                    href={t.entry}
-                    className="mt-6 inline-flex items-center gap-1.5 text-[14px] text-accent font-medium hover:text-accent-hover"
-                  >
-                    Рекомендованная программа для входа
-                    <ArrowRight className="h-4 w-4" />
-                  </Link>
-                </div>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </Section>
-
-      {/* Лестница трёх уровней */}
-      <Section>
-        <div className="container-tight">
-          <SectionHeader
-            kicker="Как устроено обучение"
-            title="Три уровня — от пробы до профессиональной ступени"
-            lead="Вы двигаетесь по институтской лестнице в своём темпе. Каждый уровень — законченный формат, а не «часть» большего."
-          />
-          <div className="grid md:grid-cols-3 gap-6">
-            {ladder.map((s) => (
-              <div
-                key={s.step}
-                className="relative p-6 md:p-7 rounded-lg border border-rule/60 bg-card/60"
-              >
-                <div className="font-display text-[44px] leading-none text-accent/40">
-                  {s.step}
-                </div>
-                <h3 className="mt-4 font-display text-xl text-ink">{s.title}</h3>
-                <p className="mt-2 text-[15px] text-muted leading-relaxed">
-                  {s.text}
-                </p>
-                <Link
-                  href={s.cta.href}
-                  className="mt-5 inline-flex items-center gap-1.5 text-[14px] text-accent font-medium"
-                >
-                  {s.cta.label}
-                  <ArrowRight className="h-4 w-4" />
-                </Link>
-              </div>
-            ))}
-          </div>
-        </div>
-      </Section>
-
-      {/* Флагман — ПК №3 */}
-      {flagship && (
-        <Section className="bg-card">
-          <div className="container-tight">
-            <SectionHeader
-              kicker="Флагманская программа"
-              title="Базовая ступень входа в специальность"
-              lead="Лицензированная программа повышения квалификации на 72 часа. С неё начинают выпускники всех трёх траекторий."
-            />
-            <div className="grid lg:grid-cols-[1.2fr,1fr] gap-6 items-stretch">
-              <ProgramCard program={flagship} variant="featured" />
-              <div className="rounded-lg bg-page border border-rule p-7 md:p-8">
-                <h3 className="font-display text-xl text-ink">
-                  Что вы получите
-                </h3>
-                <ul className="mt-5 space-y-3.5 text-[15px] text-ink/90">
-                  {[
-                    "Компетенцию работать с учеником, когда голос не идёт по невокальным причинам",
-                    "Инструменты диагностики состояния ученика в моменте голосового акта",
-                    "Практику работы под супервизией методистов института",
-                    "Удостоверение о повышении квалификации государственного образца",
-                  ].map((li) => (
-                    <li key={li} className="flex items-start gap-3">
-                      <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent shrink-0" />
-                      <span>{li}</span>
-                    </li>
-                  ))}
-                </ul>
-                <div className="mt-7 flex gap-3">
-                  <Button asChild>
-                    <Link href={`/programs/${flagship.slug}`}>
-                      Программа подробно
-                    </Link>
-                  </Button>
-                  <Button asChild variant="secondary">
-                    <Link href="#apply">Записаться</Link>
-                  </Button>
-                </div>
-              </div>
+      <section id="about" className="scroll-mt-24 py-20 md:py-28">
+        <div className="container-tight grid gap-10 lg:grid-cols-[0.75fr_1.25fr]">
+          <div><Eyebrow>01 / Об институте</Eyebrow><p className="mt-4 text-sm leading-relaxed text-muted">Сначала конкретный случай. Потом объяснение и инструмент.</p></div>
+          <div>
+            <h2 className="font-display text-[clamp(2rem,4.5vw,3.8rem)] leading-[1.14] tracking-[-0.035em]">Не каждый сложный урок решается новым упражнением.</h2>
+            <div className="mt-7 grid gap-5 md:grid-cols-2 text-[16px] leading-relaxed text-muted">
+              <p>Бывает, что ученик не занимается самостоятельно, отказывается от репертуара или пугается сцены. А бывает, что с учеником все понятно, но сложно договориться с родителями или объяснить ценность собственной работы.</p>
+              <p>Институт вокальной психологии изучает такие ситуации и создает материалы для вокальных педагогов. Наша задача - помочь лучше понимать происходящее, действовать в пределах своей компетенции и вовремя обращаться к другим специалистам, когда это необходимо.</p>
             </div>
-          </div>
-        </Section>
-      )}
-
-      {/* Бесплатные материалы */}
-      <Section>
-        <div className="container-tight">
-          <SectionHeader
-            kicker="Бесплатно"
-            title="Открытые мастер-классы и разборы"
-            lead="Разовые форматы, чтобы посмотреть, как устроен наш язык и подход. Без обязательств."
-          />
-          <div className="grid md:grid-cols-2 gap-6">
-            {samplers.slice(0, 4).map((s) => (
-              <ProgramCard key={s.id} program={s} />
-            ))}
-          </div>
-          <div className="mt-10 flex justify-center">
-            <Button asChild variant="secondary">
-              <Link href="/free">Все бесплатные материалы</Link>
-            </Button>
+            <p className="mt-6 text-sm text-muted">Мы не предлагаем педагогу становиться психологом. Различаем профессиональный опыт, авторские разработки и выводы, требующие научной проверки.</p>
           </div>
         </div>
-      </Section>
+      </section>
 
-      {/* Отзывы — плейсхолдер */}
-      <Section className="bg-card">
+      <section id="audience" className="scroll-mt-24 py-20 md:py-28">
         <div className="container-tight">
-          <SectionHeader
-            kicker="Отзывы выпускников"
-            title="Так меняется практика после обучения"
-            lead="Мы публикуем реальные отзывы выпускников с описанием конкретных изменений в работе. Раздел откроется одновременно с первым набором."
-          />
-          <div className="grid md:grid-cols-2 gap-6">
-            {[
-              {
-                name: "Педагог по вокалу, 12 лет практики",
-                city: "Санкт-Петербург",
-                quote:
-                  "После курса я перестала «уговаривать» ученика петь. Появился словарь для того, что раньше делалось интуицией — и результат стал воспроизводимым.",
-              },
-              {
-                name: "Психолог-консультант",
-                city: "Москва",
-                quote:
-                  "Программа дала конкретную рамку: с чем работаю я, где заканчивается моя ответственность, куда направляю. Без этого зайти в вокальную нишу было невозможно.",
-              },
-            ].map((r) => (
-              <figure
-                key={r.name}
-                className="p-7 md:p-8 rounded-lg bg-page border border-rule"
-              >
-                <blockquote className="font-display text-[19px] leading-relaxed text-ink">
-                  «{r.quote}»
-                </blockquote>
-                <figcaption className="mt-5 text-[13px] text-muted">
-                  <div className="text-ink">{r.name}</div>
-                  <div>{r.city}</div>
-                </figcaption>
-              </figure>
+          <Eyebrow>02 / Ситуации из практики</Eyebrow>
+          <h2 className="mt-4 max-w-[720px] font-display text-[clamp(2rem,4.5vw,3.8rem)] tracking-[-0.035em] leading-[1.13]">Знакомо по вашим<br />урокам?</h2>
+          <div className="mt-12 divide-y divide-rule border-y border-rule">
+            {audiences.map((a) => (
+              <div key={a.n} className="grid gap-3 py-8 md:grid-cols-[80px_1fr_1fr] md:items-start md:gap-10">
+                <span className="text-sm text-bronze">{a.n}</span>
+                <h3 className="font-display text-2xl md:text-[27px]">{a.title}</h3>
+                <p className="text-[15px] leading-relaxed text-muted">{a.text}</p>
+              </div>
             ))}
           </div>
         </div>
-      </Section>
+      </section>
 
-      {/* Для руководителей — тизер */}
-      <Section>
+      <section id="projects" className="scroll-mt-24 bg-ink py-20 text-page md:py-28">
         <div className="container-tight">
-          <div className="rounded-lg border border-rule bg-card p-8 md:p-12 grid md:grid-cols-[1.2fr,1fr] gap-10 items-center">
+          <Eyebrow>03 / Практические материалы</Eyebrow>
+          <h2 className="mt-4 font-display text-[clamp(2rem,4.5vw,3.8rem)] leading-[1.15] tracking-[-0.035em] text-page">Начать можно<br />с конкретной задачи.</h2>
+          <p className="mt-5 max-w-[580px] text-page/70 leading-relaxed">Не все разработки уже продаются: показываем действующие проекты и отдельно отмечаем материалы, для которых еще проверяем состав PDF и условия получения.</p>
+          <div className="mt-12 grid gap-4 md:grid-cols-3">
+            {work.map((p) => (
+              <article key={p.title} className="flex flex-col min-h-[340px] rounded-lg border border-page/20 bg-white/5 p-7">
+                <div className="text-[10px] uppercase tracking-[0.14em] text-[#D6B793]">{p.eyebrow}</div>
+                <h3 className="mt-7 text-[25px] leading-[1.2] font-display text-page">{p.title}</h3>
+                <p className="mt-4 text-sm leading-relaxed text-page/70">{p.text}</p>
+                <div className="mt-auto pt-8">
+                  <a href={p.href} target={p.external ? "_blank" : undefined} rel={p.external ? "noopener noreferrer" : undefined} className="inline-flex items-center gap-2 text-sm font-medium text-page underline underline-offset-8 decoration-page/40 hover:decoration-page">
+                    {p.action} {p.external ? <ArrowUpRight className="h-4 w-4" /> : <ArrowRight className="h-4 w-4" />}
+                  </a>
+                </div>
+              </article>
+            ))}
+          </div>
+          <p className="mt-8 text-xs leading-relaxed text-page/60">«Я это уже делаю!» сейчас проходит проверку как печатная тетрадь. Интерактивные тетради и собственная учебная платформа - следующий этап, не условие для использования PDF.</p>
+        </div>
+      </section>
+
+      <section id="directions" className="scroll-mt-24 bg-card/70 border-y border-rule py-20 md:py-28">
+        <div className="container-tight">
+          <Eyebrow>04 / Что делает ИВП</Eyebrow>
+          <div className="mt-4 flex flex-col justify-between gap-5 md:flex-row md:items-end">
+            <h2 className="max-w-[670px] font-display text-[clamp(2rem,4.5vw,3.8rem)] leading-[1.12] tracking-[-0.035em]">От конкретных вопросов<br />к полезным инструментам.</h2>
+            <p className="max-w-[320px] text-sm leading-relaxed text-muted">Обучение, исследования и рабочие материалы нужны не сами по себе, а для решений, которые педагог сможет применять в своей работе.</p>
+          </div>
+          <div className="mt-12 grid gap-px overflow-hidden rounded-lg border border-rule bg-rule md:grid-cols-2">
+            {directions.map((d) => (
+              <article key={d.n} className="group bg-page p-7 md:p-9 min-h-[275px]">
+                <div className="flex items-start justify-between"><span className="text-xs tracking-widest text-bronze">{d.n} / 04</span><d.icon className="h-6 w-6 text-accent stroke-[1.5]" /></div>
+                <h3 className="mt-10 text-[25px] md:text-[30px] font-display leading-tight">{d.title}</h3>
+                <p className="mt-3 max-w-[430px] text-[15px] text-muted leading-relaxed">{d.text}</p>
+                <div className="mt-6 text-xs uppercase tracking-wider text-accent">{d.detail}</div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section id="approach" className="scroll-mt-24 py-20 md:py-28">
+        <div className="container-tight grid gap-10 lg:grid-cols-2 lg:gap-24">
+          <div><Eyebrow>05 / Исследовательская позиция</Eyebrow><h2 className="mt-4 font-display text-[clamp(2rem,4vw,3.5rem)] tracking-[-0.035em] leading-[1.15]">Можно ли этим<br />доверять?</h2></div>
+          <div className="space-y-6 text-[16px] leading-[1.75] text-muted">
+            <p>Мы изучаем научную литературу и реальные вопросы вокальных педагогов. Отдельная часть этой работы - понять, какие сложности относятся к педагогике, какие требуют психологических знаний, а где нужна помощь другого специалиста.</p>
+            <p>Не каждый «зажим» имеет психологическую причину. И не каждый страх можно убрать вокальным упражнением. Мы не обещаем универсальных техник и открыто обозначаем ограничения методов.</p>
+            <div className="rounded-md border-l-[3px] border-bronze bg-card/50 p-5 text-sm text-ink">Страницы научных проектов и методологических материалов будут открываться по мере проверки и подготовки публикаций.</div>
+          </div>
+        </div>
+      </section>
+
+      <section id="team" className="scroll-mt-24 border-y border-rule bg-card/50 py-20 md:py-28">
+        <div className="container-tight">
+          <Eyebrow>06 / Люди</Eyebrow>
+          <h2 className="mt-4 max-w-2xl font-display text-[clamp(2rem,4vw,3.5rem)] tracking-[-0.035em] leading-[1.15]">Два взгляда на вокальную профессию.</h2>
+          <div className="mt-12 grid gap-6 md:grid-cols-2">
+            <article className="rounded-lg border border-rule bg-page p-7 md:p-9">
+              <div className="mb-10 text-5xl leading-none font-display text-accent/40">М.</div>
+              <h3 className="text-2xl font-display">Мария Осадчая</h3>
+              <p className="mt-2 text-sm uppercase tracking-wide text-bronze">Вокальный психолог · педагогический опыт</p>
+              <p className="mt-5 max-w-[450px] text-[15px] leading-relaxed text-muted">Работает с тем, кто поет: как состояние, опыт и отношения влияют на вокальное развитие, занятия и сцену.</p>
+            </article>
+            <article className="rounded-lg border border-rule bg-page p-7 md:p-9">
+              <div className="mb-10 text-5xl leading-none font-display text-accent/40">Д.</div>
+              <h3 className="text-2xl font-display">Дмитрий Осадчий</h3>
+              <p className="mt-2 text-sm uppercase tracking-wide text-bronze">Психолог · профессиональное развитие</p>
+              <p className="mt-5 max-w-[450px] text-[15px] leading-relaxed text-muted">Работает с тем, кто учит петь: как увидеть свой опыт, объяснить ценность работы и найти новые форматы профессиональной практики.</p>
+            </article>
+          </div>
+          <p className="mt-5 text-xs text-muted">Фотографии и окончательные профессиональные биографии добавляются после согласования.</p>
+        </div>
+      </section>
+
+      <section id="contact" className="scroll-mt-24 py-20 md:py-28">
+        <div className="container-tight">
+          <div className="grid gap-10 lg:grid-cols-[1fr_0.8fr] lg:items-end">
             <div>
-              <div className="kicker mb-4">Для школ и студий</div>
-              <h2 className="text-display-3 font-display text-ink">
-                Внедряем вокально-психологический подход в команде педагогов
-              </h2>
-              <p className="mt-4 text-[15px] text-muted leading-relaxed max-w-lg">
-                Проведите аудит готовности вашей школы — получите отчёт с приоритетами
-                и рекомендациями. Инструмент разработан для директоров студий,
-                методистов и руководителей коллективов.
-              </p>
-              <div className="mt-6 flex flex-wrap gap-3">
-                <Button asChild>
-                  <Link href="/for-schools">Раздел для руководителей</Link>
-                </Button>
-                <Button asChild variant="secondary">
-                  <Link href="/for-schools#audit">Пройти аудит</Link>
-                </Button>
-              </div>
+              <Eyebrow>07 / Продолжим знакомство</Eyebrow>
+              <h2 className="mt-4 font-display text-[clamp(2.2rem,5vw,4.6rem)] leading-[1.06] tracking-[-0.045em]">Начните с вопроса,<br />который вам знаком.</h2>
+              <p className="mt-6 max-w-[590px] text-[17px] leading-relaxed text-muted">Мы готовим новые материалы, изучаем запросы специалистов и развиваем образовательные форматы. Первое знакомство можно начать с существующего проекта «Новая роль».</p>
+              <a href={roleUrl} target="_blank" rel="noopener noreferrer" className="mt-8 inline-flex items-center gap-3 rounded-md bg-accent px-6 py-4 font-medium text-white hover:bg-accent-hover">
+                Открыть «Новую роль» <MoveUpRight className="h-4 w-4" />
+              </a>
             </div>
-            <ul className="space-y-4 text-[15px] text-ink/90">
-              {[
-                "Диагностика зрелости методической базы школы",
-                "Приоритеты внедрения по слоям: педагог → команда → система",
-                "Форматы корпоративного обучения от 3 до 12 месяцев",
-              ].map((li) => (
-                <li key={li} className="flex items-start gap-3">
-                  <span className="mt-2 h-1.5 w-1.5 rounded-full bg-bronze shrink-0" />
-                  <span>{li}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      </Section>
-
-      {/* Форма заявки */}
-      <Section id="apply" className="pb-24 md:pb-32">
-        <div className="container-tight">
-          <div className="grid lg:grid-cols-[1fr,1.1fr] gap-14 items-start">
-            <div>
-              <SectionHeader
-                kicker="Оставить заявку"
-                title="Расскажем о программах и подберём вход"
-                lead={
-                  <>
-                    Ответим в течение рабочего дня. Никаких автозвонков и рассылок — только
-                    ответ на ваш запрос.
-                  </>
-                }
-              />
-              <div className="mt-4 text-[14px] text-muted">
-                Или напишите нам напрямую: <a href="mailto:hello@ivp.example" className="link-underline">hello@ivp.example</a>
-              </div>
-            </div>
-            <div className="rounded-lg border border-rule bg-card p-6 md:p-8">
-              <LeadForm
-                kind="contact"
-                showMessage
-                submitLabel="Отправить заявку"
-                intro="Заполните любые удобные поля — Email или телефон достаточно."
-              />
+            <div className="rounded-lg border border-rule bg-card/60 p-7">
+              <Compass className="h-7 w-7 text-accent" />
+              <h3 className="mt-5 text-xl font-display">Сайт в развитии</h3>
+              <p className="mt-3 text-sm leading-relaxed text-muted">Это предварительная версия публичного представительства ИВП. Дополнительные программы, публикации и способы связи будут добавлены после проверки.</p>
+              <div className="mt-6 flex items-center gap-2 text-xs uppercase tracking-widest text-bronze"><BookOpenText className="h-4 w-4" /> Институт вокальной психологии</div>
             </div>
           </div>
         </div>
-      </Section>
+      </section>
     </>
   );
 }

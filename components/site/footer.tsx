@@ -1,86 +1,31 @@
 import Link from "next/link";
 import { Logo } from "./logo";
-import { siteConfig } from "@/lib/utils";
 
-const columns = [
-  {
-    title: "Обучение",
-    links: [
-      { href: "/programs", label: "Все программы" },
-      { href: "/programs?type=course", label: "Мини-курсы" },
-      { href: "/programs?type=practicum", label: "Практикумы" },
-      { href: "/free", label: "Бесплатные материалы" },
-    ],
-  },
-  {
-    title: "Институт",
-    links: [
-      { href: "/about", label: "О нас" },
-      { href: "/methodology", label: "Методология" },
-      { href: "/team", label: "Преподаватели" },
-      { href: "/for-schools", label: "Для руководителей" },
-    ],
-  },
-  {
-    title: "Информация",
-    links: [
-      { href: "/legal/license", label: "Лицензия и документы" },
-      { href: "/legal/offer", label: "Оферта" },
-      { href: "/legal/privacy", label: "Политика ПД" },
-      { href: "/legal/terms", label: "Пользовательское соглашение" },
-    ],
-  },
+const groups = [
+  { label: "Институт", links: [{ href: "/#about", label: "Об ИВП" }, { href: "/#directions", label: "Направления" }, { href: "/#team", label: "Люди" }] },
+  { label: "Работа и исследования", links: [{ href: "/materials", label: "Материалы" }, { href: "/#approach", label: "Исследовательская позиция" }, { href: "https://pro.vocalpsy-institute.ru/novaya-rol/", label: "Новая роль ↗", external: true }] },
 ];
 
 export function SiteFooter() {
   return (
-    <footer className="rule bg-card mt-auto">
-      <div className="container-tight py-14 md:py-20">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-10">
-          <div className="col-span-2 md:col-span-1">
+    <footer className="border-t border-rule bg-card mt-auto">
+      <div className="container-tight py-14 md:py-16">
+        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="lg:col-span-2">
             <Logo variant="full" />
-            <p className="mt-5 text-sm text-muted leading-relaxed max-w-[260px]">
-              Профессиональное образование в вокальной психологии как самостоятельной прикладной дисциплине.
-            </p>
+            <p className="mt-5 max-w-[390px] text-sm leading-relaxed text-muted">Исследования, образовательные материалы и профессиональные инструменты на пересечении психологии и вокальной практики.</p>
           </div>
-          {columns.map((c) => (
-            <div key={c.title}>
-              <h4 className="font-display text-[13px] uppercase tracking-[0.14em] text-muted mb-4">
-                {c.title}
-              </h4>
-              <ul className="space-y-2.5 text-[14px]">
-                {c.links.map((l) => (
-                  <li key={l.href}>
-                    <Link
-                      href={l.href}
-                      className="text-ink/80 hover:text-accent transition-colors"
-                    >
-                      {l.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
+          {groups.map(group => (
+            <div key={group.label}>
+              <h2 className="mb-4 text-xs uppercase tracking-[0.15em] text-bronze">{group.label}</h2>
+              <ul className="space-y-3 text-sm">{group.links.map(item => <li key={item.href}><Link href={item.href} target={"external" in item && item.external ? "_blank" : undefined} rel={"external" in item && item.external ? "noopener noreferrer" : undefined} className="text-ink/80 hover:text-accent">{item.label}</Link></li>)}</ul>
             </div>
           ))}
         </div>
-
-        <div className="mt-14 pt-8 border-t border-rule/70 flex flex-col md:flex-row md:items-center gap-4 md:justify-between text-[13px] text-muted">
-          <div>
-            © {new Date().getFullYear()} {siteConfig.name}. Все права защищены.
-          </div>
-          <div className="flex flex-col md:flex-row gap-2 md:gap-6 md:items-center">
-            <a href={`mailto:${siteConfig.email}`} className="hover:text-accent">
-              {siteConfig.email}
-            </a>
-            <span className="hidden md:inline">·</span>
-            <span>ООО «Название» · ИНН 0000000000 · ОГРН 0000000000000</span>
-          </div>
+        <div className="mt-12 border-t border-rule pt-6 flex flex-col gap-2 text-xs text-muted md:flex-row md:justify-between">
+          <span>© {new Date().getFullYear()} Институт вокальной психологии</span>
+          <span>Предварительная версия сайта · Информация о программах и документах уточняется</span>
         </div>
-
-        <p className="mt-6 text-[12px] text-muted/80 leading-relaxed">
-          Образовательная деятельность осуществляется на основании лицензии
-          №&nbsp;<span className="text-muted">[будет указан после получения]</span>.
-        </p>
       </div>
     </footer>
   );
