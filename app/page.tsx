@@ -17,8 +17,8 @@ const audiences = [
 
 const work = [
   { eyebrow: "ДЕЙСТВУЮЩАЯ СТРАНИЦА", title: "Новая профессиональная роль", text: "Когда хочется выйти за рамки обычных уроков и понять, что еще можно делать со своим опытом. Отдельная страница проекта для педагогов.", href: roleUrl, action: "Посмотреть проект", external: true },
-  { eyebrow: "PDF-КОМПЛЕКТ · ГОТОВНОСТЬ УТОЧНЯЕТСЯ", title: "Профессиональная пересборка", text: "Опыт есть, ученики и результаты есть. Но как описать, что именно вы делаете и что в вашей работе свое? Две рабочие тетради о практике и собственном методе.", href: "#team", action: "Кто разрабатывает", external: false },
-  { eyebrow: "АТЛАС · УСЛОВИЯ ПОЛУЧЕНИЯ УТОЧНЯЮТСЯ", title: "Навигатор для работы педагога", text: "Уроки с детьми, подготовка к конкурсу, взрослые ученики, онлайн. Разные форматы работы требуют разных договоренностей и критериев результата.", href: "#team", action: "Об авторах и разработках", external: false },
+  { eyebrow: "PDF-КОМПЛЕКТ · ГОТОВНОСТЬ УТОЧНЯЕТСЯ", title: "Профессиональная пересборка", text: "Опыт есть, ученики и результаты есть. Но как описать, что именно вы делаете и что в вашей работе свое? Две рабочие тетради о практике и собственном методе.", href: "/materials#peresborka", action: "О тетрадях", external: false },
+  { eyebrow: "АТЛАС · УСЛОВИЯ ПОЛУЧЕНИЯ УТОЧНЯЮТСЯ", title: "Навигатор для работы педагога", text: "Уроки с детьми, подготовка к конкурсу, взрослые ученики, онлайн. Разные форматы работы требуют разных договоренностей и критериев результата.", href: "/materials#atlas", action: "О навигаторе", external: false },
 ];
 
 function Eyebrow({ children }: { children: React.ReactNode }) {
@@ -45,8 +45,8 @@ export default function HomePage() {
               <a href="#audience" className="inline-flex items-center gap-3 rounded-md bg-accent px-6 py-4 font-medium text-white transition-colors hover:bg-accent-hover">
                 Узнать знакомые ситуации <ArrowRight className="h-4 w-4" />
               </a>
-              <a href="#projects" className="inline-flex items-center gap-3 rounded-md border border-rule bg-page/80 px-6 py-4 font-medium text-ink transition-colors hover:border-accent">
-                Практические материалы <ArrowDownRight className="h-4 w-4" />
+              <a href="/materials" className="inline-flex items-center gap-3 rounded-md border border-rule bg-page/80 px-6 py-4 font-medium text-ink transition-colors hover:border-accent">
+                Посмотреть материалы <ArrowDownRight className="h-4 w-4" />
               </a>
             </div>
           </div>
