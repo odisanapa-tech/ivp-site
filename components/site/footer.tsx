@@ -3,7 +3,7 @@ import { Logo } from "./logo";
 
 const groups = [
   { label: "Институт", links: [{ href: "/#about", label: "Об ИВП" }, { href: "/#directions", label: "Направления" }, { href: "/#team", label: "Люди" }] },
-  { label: "Работа и исследования", links: [{ href: "/#projects", label: "Разработки" }, { href: "/#approach", label: "Исследовательская позиция" }, { href: "https://pro.vocalpsy-institute.ru/novaya-rol/", label: "Новая роль ↗", external: true }] },
+  { label: "Работа и исследования", links: [{ href: "/materials", label: "Материалы" }, { href: "/#approach", label: "Исследовательская позиция" }, { href: "https://pro.vocalpsy-institute.ru/novaya-rol/", label: "Новая роль ↗", external: true }] },
 ];
 
 export function SiteFooter() {
